@@ -1,0 +1,51 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "GeoAttend Dev - Debug",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "-t",
+                "lib/main.dart"
+            ]
+        },
+        {
+            "name": "GeoAttend Dev - Release",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "-t",
+                "lib/main.dart",
+                "--release"
+            ]
+        },
+        {
+            "name": "GeoAttend Prod - Debug",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "prod",
+                "-t",
+                "lib/main.dart"
+            ]
+        },
+        {
+            "name": "GeoAttend Prod - Release",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "prod",
+                "-t",
+                "lib/main.dart",
+                "--release"
+            ]
+        }
+    ]
+}
