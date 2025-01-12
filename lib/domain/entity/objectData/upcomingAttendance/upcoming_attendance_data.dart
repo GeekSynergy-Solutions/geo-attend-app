@@ -9,6 +9,7 @@ class UpcomingAttendanceData extends Equatable{
   String attendanceTime;
   String attendanceDate;
   double attendanceRadius;
+  List attendedUsers;
 
   UpcomingAttendanceData({
     required this.attendanceTitle,
@@ -17,6 +18,7 @@ class UpcomingAttendanceData extends Equatable{
     required this.attendanceVenue,
     required this.attendanceTime,
     required this.attendanceRadius,
+    required this.attendedUsers,
   });
   
   @override
@@ -27,5 +29,6 @@ class UpcomingAttendanceData extends Equatable{
     attendanceVenue,
     attendanceTime,
     attendanceRadius,
+    attendedUsers,
   ];
 }

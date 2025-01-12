@@ -9,21 +9,21 @@ part of 'verified_user_data_model.dart';
 VerifiedUserDataModel _$VerifiedUserDataModelFromJson(
         Map<String, dynamic> json) =>
     VerifiedUserDataModel(
-      accessToken: json['accessToken'] as String,
+      token: json['token'] as String,
       accountVerified: json['accountVerified'] as bool,
       deviceVerified: json['deviceVerified'] as bool,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       deviceName: json['deviceName'] as String,
-      emailAddress: json['emailAddress'] as String,
-      firstTimeLogin: json['firstTimeLogin'] as bool,
+      userProfileBgColor: json['userProfileBgColor'] as String,
+      email: json['email'] as String,
+      firstTimeUser: json['firstTimeUser'] as bool,
       hasUserMigrated: json['hasUserMigrated'] as bool,
-      profileBgColor: json['profileBgColor'] as String,
       refreshToken: json['refreshToken'] as String,
       userId: json['userId'] as String,
       userInitial: json['userInitial'] as String,
-      userProfileBgColor: _$JsonConverterFromJson<Color, Color>(
-          json['userProfileBgColor'], const CustomColorConverter().fromJson),
+      profileBgColor: _$JsonConverterFromJson<Color, Color>(
+          json['profileBgColor'], const CustomColorConverter().fromJson),
       tokenExpiryDate: json['tokenExpiryDate'] as String? ?? '',
       role: json['role'] as String? ?? '',
     );
@@ -31,22 +31,22 @@ VerifiedUserDataModel _$VerifiedUserDataModelFromJson(
 Map<String, dynamic> _$VerifiedUserDataModelToJson(
         VerifiedUserDataModel instance) =>
     <String, dynamic>{
-      'accessToken': instance.accessToken,
+      'token': instance.token,
       'refreshToken': instance.refreshToken,
       'userId': instance.userId,
-      'emailAddress': instance.emailAddress,
+      'email': instance.email,
       'firstName': instance.firstName,
+      'userProfileBgColor': instance.userProfileBgColor,
       'lastName': instance.lastName,
       'deviceName': instance.deviceName,
-      'profileBgColor': instance.profileBgColor,
       'userInitial': instance.userInitial,
       'accountVerified': instance.accountVerified,
       'deviceVerified': instance.deviceVerified,
-      'firstTimeLogin': instance.firstTimeLogin,
+      'firstTimeUser': instance.firstTimeUser,
       'hasUserMigrated': instance.hasUserMigrated,
-      'userProfileBgColor': _$JsonConverterToJson<Color, Color>(
-          instance.userProfileBgColor, const CustomColorConverter().toJson),
       'tokenExpiryDate': instance.tokenExpiryDate,
+      'profileBgColor': _$JsonConverterToJson<Color, Color>(
+          instance.profileBgColor, const CustomColorConverter().toJson),
       'role': instance.role,
     };
 

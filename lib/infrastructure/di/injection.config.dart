@@ -56,6 +56,7 @@ import 'package:geoattend/infrastructure/httpClient/interceptors/geo_location_au
 import 'package:geoattend/presentation/attendance/bloc/attendance_bloc.dart'
     as _i247;
 import 'package:geoattend/presentation/auth/bloc/auth_bloc.dart' as _i644;
+import 'package:geoattend/presentation/home/bloc/home_bloc.dart' as _i492;
 import 'package:geoattend/presentation/onBoarding/bloc/on_boarding_bloc.dart'
     as _i46;
 import 'package:geoattend/presentation/splash/bloc/splash_bloc.dart' as _i304;
@@ -121,20 +122,28 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i296.AttendanceRepo(gh<_i522.AttndData>()));
     gh.factory<_i747.AuthRepoInterface>(
         () => _i778.AuthRepo(gh<_i380.AuthData>()));
-    gh.factory<_i46.OnBoardingBloc>(() => _i46.OnBoardingBloc(
+    gh.factory<_i492.HomeBloc>(() => _i492.HomeBloc(
           gh<_i889.AppSharedPreferences>(),
-          gh<_i747.AuthRepoInterface>(),
+          gh<_i538.AppFlutterSecureStorage>(),
+          gh<_i593.AttendanceRepoInterface>(),
         ));
     gh.factory<_i644.AuthBloc>(() => _i644.AuthBloc(
           gh<_i889.AppSharedPreferences>(),
           gh<_i538.AppFlutterSecureStorage>(),
           gh<_i747.AuthRepoInterface>(),
+          gh<_i896.RequestUserData>(),
         ));
     gh.factory<_i247.AttendanceBloc>(() => _i247.AttendanceBloc(
           gh<_i889.AppSharedPreferences>(),
           gh<_i538.AppFlutterSecureStorage>(),
           gh<_i351.HereGeoLocationRepoInterface>(),
           gh<_i593.AttendanceRepoInterface>(),
+        ));
+    gh.factory<_i46.OnBoardingBloc>(() => _i46.OnBoardingBloc(
+          gh<_i889.AppSharedPreferences>(),
+          gh<_i538.AppFlutterSecureStorage>(),
+          gh<_i747.AuthRepoInterface>(),
+          gh<_i896.RequestUserData>(),
         ));
     return this;
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geoattend/app/config/appColors/app_colors.dart';
-import 'package:geoattend/infrastructure/util/appImagePath/app_image_path.dart';
 import 'package:geoattend/infrastructure/util/reusableWidgets/appSpacer/app_spacer_widget.dart';
 
 class HomeUserProfileWidget extends StatelessWidget {
@@ -20,13 +19,13 @@ class HomeUserProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70.0,
+      height: 80.0,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
         horizontal: 20.0,
       ),
       child: Card(
-        elevation: 3.0,
+        elevation: 2.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             8.0,
@@ -38,20 +37,22 @@ class HomeUserProfileWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                height: 32.0,
-                width: 32.0,
+                height: 40.0,
+                width: 40.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: userBgColor,
                 ),
-                child: Text(
-                  userInitial,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                    color: userBgColor == AppColors.whiteTextColor
-                        ? AppColors.blackTextColor
-                        : AppColors.whiteTextColor,
+                child: Center(
+                  child: Text(
+                    userInitial,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w700,
+                      color: userBgColor == AppColors.whiteTextColor
+                          ? AppColors.blackTextColor
+                          : AppColors.whiteTextColor,
+                    ),
                   ),
                 ),
               ),
@@ -73,25 +74,30 @@ class HomeUserProfileWidget extends StatelessWidget {
                   const AppSpacerWidget(
                     height: 2.5,
                   ),
-                  Text(
-                    greeting,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.homeUserProfileNameColor,
+                  FittedBox(
+                    child: Text(
+                      greeting,
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.homeUserProfileNameColor,
+                      ),
                     ),
                   ),
                 ],
               ),
-              Expanded(
-                child: Align(
-                  alignment: AlignmentDirectional.topEnd,
-                  child: actionItemWidget(
-                    functionality: () {},
-                    imagePath: AppImagePath.notificationItemSvg,
-                  ),
-                ),
+              const AppSpacerWidget(
+                width: 10.0,
               ),
+              // Expanded(
+              //   child: Align(
+              //     alignment: AlignmentDirectional.topEnd,
+              //     child: actionItemWidget(
+              //       functionality: () {},
+              //       imagePath: AppImagePath.notificationItemSvg,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

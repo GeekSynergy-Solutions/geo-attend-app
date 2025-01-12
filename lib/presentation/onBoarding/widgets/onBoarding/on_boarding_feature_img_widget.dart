@@ -47,7 +47,7 @@ class _OnBoardingFeatureImgWidgetState extends State<OnBoardingFeatureImgWidget>
         animation: _controller,
         builder: (context, child) {
           return Transform.scale(
-            scale: _scaleAnimation.value, // Apply scaling effect (zoom in/out)
+            scale: _scaleAnimation.value,
             child: child,
           );
         },

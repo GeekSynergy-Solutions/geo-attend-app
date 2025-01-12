@@ -1,9 +1,13 @@
 import 'package:either_dart/either.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geoattend/data/localStorage/flutterSecureStorage/app_flutter_secure_storage.dart';
+import 'package:geoattend/data/localStorage/remoteDataUpdateInLocalDb/remote_data_update_in_local_db.dart';
+import 'package:geoattend/data/localStorage/requestLocalDb/request_user_data.dart';
 import 'package:geoattend/data/remote/auth/model/verifiedUserData/verified_user_data_model.dart';
 import 'package:geoattend/domain/entity/objectData/onBoardingItemData/on_boarding_item_data.dart';
 import 'package:geoattend/domain/entity/request/auth/continueAsAGuest/continue_as_a_guest_request.dart';
 import 'package:geoattend/domain/entity/response/failure/failure_response.dart';
+import 'package:geoattend/domain/entity/response/success/success_response.dart';
 import 'package:geoattend/domain/repository/auth/auth_repo_interface.dart';
 import 'package:geoattend/infrastructure/util/appImagePath/app_image_path.dart';
 import 'package:geoattend/infrastructure/util/deviceData/device_data.dart';
@@ -16,6 +20,8 @@ import 'package:geoattend/data/localStorage/sharedPreferences/app_shared_prefere
 @injectable
 class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
   final AppSharedPreferences appSharedPreferences;
+  final AppFlutterSecureStorage secureStorage;
+  final RequestUserData requestUserData;
   final AuthRepoInterface authRepo;
 
   int slideIndex = 0;
@@ -23,7 +29,9 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
 
   OnBoardingBloc(
     this.appSharedPreferences,
+    this.secureStorage,
     this.authRepo,
+    this.requestUserData,
   ) : super(const OnBoardingState()) {
     on<SkipBoardingListItemEvent>((event, emit) {});
     on<GetStartedEvent>((event, emit) async {
@@ -39,8 +47,7 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
       String deviceId = await DeviceData.deviceId();
       String deviceName = await DeviceData.modelName();
 
-      Either<FailureResponse, VerifiedUserDataModel>
-          tagGuestUserRequestResponse =
+      Either<FailureResponse, SuccessResponse> tagGuestUserRequestResponse =
           await authRepo.continueAsAGuestUserAuthRepoRequest(
         request: ContinueAsAGuestRequest(
           deviceId: deviceId,
@@ -49,12 +56,28 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
       );
 
       if (tagGuestUserRequestResponse.isRight) {
+        VerifiedUserDataModel verifiedUserData = VerifiedUserDataModel.fromJson(
+            tagGuestUserRequestResponse.right.data);
         await appSharedPreferences.cacheUserIsAGuest();
+
+        await RemoteDataUpdateInLocalDb.addUpdateUser(
+          requestUserData: requestUserData,
+          verifiedUser: verifiedUserData,
+        );
+
+        await appSharedPreferences.cacheUserEmail(
+            emailAddress: verifiedUserData.email);
+        await appSharedPreferences
+            .cacheUserTokenExpiryDate(verifiedUserData.tokenExpiryDate!);
+        await secureStorage.setLoginToken(verifiedUserData.token);
+        await secureStorage.setRefreshToken(verifiedUserData.refreshToken);
+        await secureStorage.setUserAuthEmail(verifiedUserData.email);
+
         emit(
           state.copyWith(
             taggingGuestUser: false,
             taggingGuestUserSuccessful: true,
-            verifyUserData: tagGuestUserRequestResponse.right,
+            verifyUserData: verifiedUserData,
             message: 'Successful',
           ),
         );

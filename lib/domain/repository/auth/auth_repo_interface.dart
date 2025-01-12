@@ -1,5 +1,4 @@
 import 'package:either_dart/either.dart';
-import 'package:geoattend/data/remote/auth/model/verifiedUserData/verified_user_data_model.dart';
 import 'package:geoattend/domain/entity/request/auth/login/login_request.dart';
 import 'package:geoattend/domain/entity/request/auth/requestForgotPassword/request_forgot_password_request.dart';
 import 'package:geoattend/domain/entity/request/auth/resendAccVerification/resend_acc_verification_request.dart';
@@ -17,9 +16,9 @@ import 'package:geoattend/domain/entity/response/success/success_response.dart';
 abstract class AuthRepoInterface {
   Future<Either<FailureResponse, SuccessResponse>> validateAccountAuthRepoRequest(
       {required ValidateAccountRequest request});
-  Future<Either<FailureResponse, VerifiedUserDataModel>> loginAuthRepoRequest(
+  Future<Either<FailureResponse, SuccessResponse>> loginAuthRepoRequest(
       {required LoginRequest request});
-  Future<Either<FailureResponse, VerifiedUserDataModel>> continueAsAGuestUserAuthRepoRequest(
+  Future<Either<FailureResponse, SuccessResponse>> continueAsAGuestUserAuthRepoRequest(
       {required ContinueAsAGuestRequest request});
   Future<Either<FailureResponse, SuccessResponse>>
       verifyAccountAuthRepoRequest({required VerifyAccountRequest request});

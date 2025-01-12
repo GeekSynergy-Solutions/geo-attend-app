@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geoattend/domain/entity/objectData/successfulUserDataStatus/successful_user_data_status.dart';
+import 'package:geoattend/infrastructure/di/injection.dart';
+import 'package:geoattend/presentation/home/bloc/home_bloc.dart';
 import 'package:geoattend/presentation/home/widgets/home_view_widget.dart';
 
 @RoutePage()
@@ -18,8 +21,11 @@ class HomePage extends StatelessWidget {
       left: false,
       top: false,
       right: false,
-      child: HomeViewWidget(
-        successfulUserDataStatus: successfulUserDataStatus,
+      child: BlocProvider(
+        create: (context) => getIt<HomeBloc>(),
+        child: HomeViewWidget(
+          successfulUserDataStatus: successfulUserDataStatus,
+        ),
       ),
     );
   }

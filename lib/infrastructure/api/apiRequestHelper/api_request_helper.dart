@@ -29,18 +29,25 @@ class ApiRequestHelper {
     String endPoint, {
     required bool isRequestAuthorized,
     Map<String, dynamic>? jsonData,
+    List<Map<String, dynamic>>? arrayJsonData,
+    dynamic dynamicData,
     bool isDataRequired = false,
+    bool acceptJson = true,
   }) async {
     dynamic postRequestResponse;
     Options options = Options(
       headers: getRequestHeaders(
         isRequestAuthorized: isRequestAuthorized,
+        acceptJson: acceptJson,
       ),
     );
     try {
       if (isDataRequired == true) {
         postRequestResponse = await dio.post(endPoint,
-            data: jsonEncode(jsonData), options: options);
+            data: (jsonData != null || arrayJsonData != null)
+                ? jsonEncode(jsonData ?? arrayJsonData)
+                : dynamicData,
+            options: options);
       } else {
         postRequestResponse = await dio.post(endPoint, options: options);
       }
@@ -65,18 +72,25 @@ class ApiRequestHelper {
     String endPoint, {
     required bool isRequestAuthorized,
     Map<String, dynamic>? jsonData,
+    List<Map<String, dynamic>>? arrayJsonData,
+    dynamic dynamicData,
     bool isDataRequired = false,
+    bool acceptJson = true,
   }) async {
     dynamic putRequestResponse;
     Options options = Options(
       headers: getRequestHeaders(
         isRequestAuthorized: isRequestAuthorized,
+        acceptJson: acceptJson,
       ),
     );
     try {
       if (isDataRequired == true) {
         putRequestResponse = await dio.put(endPoint,
-            data: jsonEncode(jsonData), options: options);
+            data: (jsonData != null || arrayJsonData != null)
+                ? jsonEncode(jsonData ?? arrayJsonData)
+                : dynamicData,
+            options: options);
       } else {
         putRequestResponse = await dio.put(endPoint, options: options);
       }
@@ -110,6 +124,37 @@ class ApiRequestHelper {
     try {
       postRequestWithFormDataResponse =
           await dio.post(endPoint, data: formData, options: options);
+    } on SocketException catch (e) {
+      postRequestWithFormDataResponse = formatExceptionResponse(
+        data: {
+          'message': e.message,
+        },
+      );
+    } on DioException catch (e) {
+      postRequestWithFormDataResponse = formatDioExceptionResponse(
+        e: e,
+        requestResponse: postRequestWithFormDataResponse,
+      );
+    }
+    return requestResponseBaseOnStatusCode(
+        apiRequestResponse: postRequestWithFormDataResponse);
+  }
+
+  Future<Either<FailureResponse, Map<String, dynamic>>>
+      postRequestWithFormDataList(
+    String endPoint, {
+    required List<FormData> formDataList,
+    required bool isRequestAuthorized,
+  }) async {
+    dynamic postRequestWithFormDataResponse;
+    Options options = Options(
+      headers: getRequestHeaders(
+        isRequestAuthorized: isRequestAuthorized,
+      ),
+    );
+    try {
+      postRequestWithFormDataResponse =
+          await dio.post(endPoint, data: formDataList, options: options);
     } on SocketException catch (e) {
       postRequestWithFormDataResponse = formatExceptionResponse(
         data: {
@@ -160,18 +205,25 @@ class ApiRequestHelper {
     String endPoint, {
     required bool isRequestAuthorized,
     Map<String, dynamic>? jsonData,
+    List<Map<String, dynamic>>? arrayJsonData,
+    dynamic dynamicData,
     bool isDataRequired = false,
+    bool acceptJson = true,
   }) async {
     dynamic patchRequestResponse;
     Options options = Options(
       headers: getRequestHeaders(
         isRequestAuthorized: isRequestAuthorized,
+        acceptJson: acceptJson,
       ),
     );
     try {
       if (isDataRequired == true) {
         patchRequestResponse = await dio.patch(endPoint,
-            data: jsonEncode(jsonData), options: options);
+            data: (jsonData != null || arrayJsonData != null)
+                ? jsonEncode(jsonData ?? arrayJsonData)
+                : dynamicData,
+            options: options);
       } else {
         patchRequestResponse = await dio.patch(endPoint, options: options);
       }
@@ -227,6 +279,7 @@ class ApiRequestHelper {
     String endPoint, {
     required bool isRequestAuthorized,
     Map<String, String?>? jsonData,
+    List<Map<String, dynamic>>? arrayJsonData,
     bool isDataRequired = false,
   }) async {
     dynamic deleteRequestResponse;
@@ -238,7 +291,7 @@ class ApiRequestHelper {
     try {
       if (isDataRequired == true) {
         deleteRequestResponse = await dio.delete(endPoint,
-            data: jsonEncode(jsonData), options: options);
+            data: jsonEncode(jsonData ?? arrayJsonData), options: options);
       } else {
         deleteRequestResponse = await dio.delete(endPoint, options: options);
       }
@@ -381,13 +434,14 @@ class ApiRequestHelper {
     return {'statusCode': statusCode, 'data': data};
   }
 
-  Map<String, String> getRequestHeaders({required bool isRequestAuthorized}) {
+  Map<String, String> getRequestHeaders(
+      {required bool isRequestAuthorized, bool acceptJson = true}) {
     return isRequestAuthorized
         ? {
             APIEndPointsParameter.authHeader: APIEndPointsParameter.authHeader,
-            'Accept': 'application/json',
+            'Accept': acceptJson ? 'application/json' : 'text/plain',
             'Content-Type': 'application/json'
           }
-        : {'Accept': 'application/json', 'Content-Type': 'application/json'};
+        : {'Accept': acceptJson ? 'application/json' : 'text/plain', 'Content-Type': 'application/json'};
   }
 }

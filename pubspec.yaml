@@ -51,6 +51,8 @@ dependencies:
   geolocator: ^13.0.2
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
+  percent_indicator: ^4.2.4
+  avatar_stack: ^2.0.0
   # open_mail_app: 
 
 dev_dependencies:

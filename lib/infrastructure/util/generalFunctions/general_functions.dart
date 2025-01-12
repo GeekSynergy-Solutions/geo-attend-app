@@ -534,6 +534,14 @@ class GeneralFunctions {
     return phoneNumber;
   }
 
+  static Color convertHexToColor(String hexCode) {
+    hexCode = hexCode.toUpperCase().replaceAll('#', '');
+    if (hexCode.length == 6) {
+      hexCode = 'FF$hexCode';
+    }
+    return Color(int.parse(hexCode, radix: 16));
+  }
+
   static Color getColor(String color) {
     switch (color.toLowerCase()) {
       case "red":

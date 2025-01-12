@@ -49,15 +49,23 @@ class _GetStartedViewWidgetState extends State<GetStartedViewWidget> {
               if (state.taggingGuestUserSuccessful! && context.mounted) {}
             });
           } else {
-            context.router.replaceAll(
-              [
-                DashboardRoute(
-                  successfulUserDataStatus: SuccessfulUserDataStatus(
-                    isUserAGuest: true,
-                    verifiedUserDataResponse: state.verifyUserData!,
-                  ),
-                )
-              ],
+            GeneralFunctions.showBottomSheetSuccessfulMessage(
+              context: context,
+              requireAnAction: true,
+              actionBtnLabel: 'Proceed to verify',
+              message: state.message,
+              functionality: () {
+                context.router.replaceAll(
+                  [
+                    DashboardRoute(
+                      successfulUserDataStatus: SuccessfulUserDataStatus(
+                        isUserAGuest: true,
+                        verifiedUserDataResponse: state.verifyUserData!,
+                      ),
+                    )
+                  ],
+                );
+              },
             );
           }
         }

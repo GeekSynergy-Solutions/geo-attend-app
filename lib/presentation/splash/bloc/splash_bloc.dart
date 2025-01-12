@@ -23,23 +23,29 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
           : false;
       bool isUserAGuest = await appSharedPreferences.readUserIsAGuest();
 
-      VerifiedUserDataModel userData = VerifiedUserDataModel(
-        emailAddress: await requestUserData.getUserEmailAddress(),
-        firstName: await requestUserData.getUserFirstName(),
-        userId: await requestUserData.getUserDbUserId(),
-        lastName: await requestUserData.getUserLastName(),
-        role: await requestUserData.getUserRole(),
-        accessToken: '',
-        refreshToken: '',
-        accountVerified:
-            await requestUserData.getUserAccountVerificationStatus(),
-        deviceVerified: await requestUserData.getUserDeviceVerificationStatus(),
-        firstTimeLogin: await requestUserData.getUserFirstTimeLoginStatus(),
-        hasUserMigrated: await requestUserData.getAccountMigirationStatus(),
-        profileBgColor: await requestUserData.getUserProfileBackgroundStatus(),
-        userInitial: await requestUserData.getUserInitialStatus(),
-        deviceName: await requestUserData.getUserDeviceNameStatus(),
-      );
+      late VerifiedUserDataModel userData;
+
+      if (isUserAuthorizationActive || isUserAGuest) {
+        userData = VerifiedUserDataModel(
+          email: await requestUserData.getUserEmailAddress(),
+          firstName: await requestUserData.getUserFirstName(),
+          userId: await requestUserData.getUserDbUserId(),
+          lastName: await requestUserData.getUserLastName(),
+          role: await requestUserData.getUserRole(),
+          token: '',
+          refreshToken: '',
+          accountVerified:
+              await requestUserData.getUserAccountVerificationStatus(),
+          deviceVerified:
+              await requestUserData.getUserDeviceVerificationStatus(),
+          firstTimeUser: await requestUserData.getUserFirstTimeLoginStatus(),
+          hasUserMigrated: await requestUserData.getAccountMigirationStatus(),
+          userProfileBgColor:
+              await requestUserData.getUserProfileBackgroundStatus(),
+          userInitial: await requestUserData.getUserInitialStatus(),
+          deviceName: await requestUserData.getUserDeviceNameStatus(),
+        );
+      }
 
       emit(
         isUserAuthorizationActive || isUserAGuest
@@ -52,7 +58,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
             : RoutingState(
                 proceedToDashboard: false,
                 proceedToGetStarted:
-                    isUserAuthorizationActive ? false : isUserOnBoarded,
+                    !(isUserAuthorizationActive ? false : isUserOnBoarded),
                 proceedToOnBoarding: !isUserOnBoarded,
               ),
       );

@@ -73,10 +73,9 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
           setState(() {
             authFieldValidationStatus = state.authFieldValidation;
           });
-          GeneralFunctions.snackBarMessage(
+          GeneralFunctions.showErrorMessage(
             context: context,
-            message: state.errorMessage,
-            successMessage: state.isRequestSuccessful,
+            errorMessage: state.errorMessage,
           );
         }
       },
@@ -145,11 +144,12 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                 controller: passwordController,
                 enabled: !isRequestInProgress,
                 errorText: !authFieldValidationStatus.isPasswordValid
-                    ? AppStringConstants.passwordFieldError
+                    ? null
                     : null,
                 hintText: AppStringConstants.passwordHint,
                 isThereAnError: !authFieldValidationStatus.isPasswordValid,
-                increaseBy: !authFieldValidationStatus.isPasswordValid ? 2 : 1,
+                increaseBy: 1,
+                allowBottomPadding: authFieldValidationStatus.isPasswordValid,
                 keyboardType: TextInputType.text,
                 title: AppStringConstants.passwordLabel,
                 obscureText: passwordVisibility,

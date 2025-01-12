@@ -1,6 +1,8 @@
 import 'package:either_dart/either.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geoattend/data/localStorage/flutterSecureStorage/app_flutter_secure_storage.dart';
+import 'package:geoattend/data/localStorage/remoteDataUpdateInLocalDb/remote_data_update_in_local_db.dart';
+import 'package:geoattend/data/localStorage/requestLocalDb/request_user_data.dart';
 import 'package:geoattend/data/localStorage/sharedPreferences/app_shared_preferences.dart';
 import 'package:geoattend/data/remote/auth/model/verifiedUserData/verified_user_data_model.dart';
 import 'package:geoattend/data/remote/geoLocation/model/hereGeoLocation/hereLocation/here_location_model.dart';
@@ -33,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AppSharedPreferences appSharedPreferences;
   final AppFlutterSecureStorage secureStorage;
   final AuthRepoInterface authRepoInterface;
+  final RequestUserData requestUserData;
 
   AuthFieldValidation authFieldValidation = AuthFieldValidation();
 
@@ -47,11 +50,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.appSharedPreferences,
     this.secureStorage,
     this.authRepoInterface,
+    this.requestUserData,
   ) : super(const InitAuthState()) {
     on<ValidateAccAuthEvent>((event, emit) {});
     on<LoginAuthEvent>((event, emit) async {
       String emailAddress = event.emailAddress;
       String password = event.password;
+
+      emit(
+        const LoadingAuthState(),
+      );
 
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
@@ -70,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         String deviceName = await DeviceData.modelName();
         String deviceId = await DeviceData.deviceId();
 
-        Either<FailureResponse, VerifiedUserDataModel> loginRequestResponse =
+        Either<FailureResponse, SuccessResponse> loginRequestResponse =
             await authRepoInterface.loginAuthRepoRequest(
           request: LoginRequest(
             email: emailAddress,
@@ -80,7 +88,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
         if (loginRequestResponse.isRight) {
-          VerifiedUserDataModel verifiedUserData = loginRequestResponse.right;
+          VerifiedUserDataModel verifiedUserData = VerifiedUserDataModel.fromJson(loginRequestResponse.right.data) ;
+          await RemoteDataUpdateInLocalDb.addUpdateUser(
+            requestUserData: requestUserData,
+            verifiedUser: verifiedUserData,
+          );
+
+          await appSharedPreferences.cacheUserEmail(emailAddress: emailAddress);
+          await appSharedPreferences.cacheUserTokenExpiryDate(verifiedUserData.tokenExpiryDate!);
+          await secureStorage.setLoginToken(verifiedUserData.token);
+          await secureStorage.setRefreshToken(verifiedUserData.refreshToken);
+          await secureStorage.setUserAuthEmail(verifiedUserData.email);
+          await secureStorage.setUserAuthPassword(password);
+
           emit(
             SuccessAuthState.login(
               successMessage: verifiedUserData.accountVerified
@@ -125,6 +145,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String lastName = event.lastName;
       bool acceptTerms = event.acceptTerms;
 
+      emit(
+        const LoadingAuthState(),
+      );
+
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
             GeneralFunctions.checkFieldIfStringIsEmpty(emailAddress),
@@ -134,9 +158,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           password: event.password,
         ),
         isConfirmPasswordValid:
-            GeneralFunctions.checkFieldIfStringIsEmpty(confirmPassword),
-        isFirstNameValid: GeneralFunctions.checkFieldIfStringIsEmpty(firstName),
-        isLastNameValid: GeneralFunctions.checkFieldIfStringIsEmpty(lastName),
+            !GeneralFunctions.checkFieldIfStringIsEmpty(confirmPassword),
+        isFirstNameValid:
+            !GeneralFunctions.checkFieldIfStringIsEmpty(firstName),
+        isLastNameValid: !GeneralFunctions.checkFieldIfStringIsEmpty(lastName),
         isPasswordMismatched: !StringVaildator.doesPasswordMatch(
             password: password, confirmPassword: confirmPassword),
         isTermsOfServiceAgreed: acceptTerms,
@@ -235,6 +260,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RequestForForgotPasswordForAuth>((event, emit) async {
       String emailAddress = event.emailAddress;
 
+      emit(
+        const LoadingAuthState(),
+      );
+
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
             GeneralFunctions.checkFieldIfStringIsEmpty(emailAddress),
@@ -289,6 +318,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyOTPForForgotPasswordAuth>((event, emit) async {
       String emailAddress = event.emailAddress;
       String otp = event.otp;
+
+      emit(
+        const LoadingAuthState(),
+      );
 
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
@@ -347,6 +380,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String emailAddress = event.emailAddress;
       String otp = event.otp;
 
+      emit(
+        const LoadingAuthState(),
+      );
+
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
             GeneralFunctions.checkFieldIfStringIsEmpty(emailAddress),
@@ -401,6 +438,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String emailAddress = event.emailAddress;
       String otp = event.otp;
 
+      emit(
+        const LoadingAuthState(),
+      );
+
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
             GeneralFunctions.checkFieldIfStringIsEmpty(emailAddress),
@@ -453,6 +494,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<RequestAccountVerificationCodeAuth>((event, emit) async {
       String emailAddress = event.emailAddress;
+
+      emit(
+        const LoadingAuthState(),
+      );
 
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
@@ -509,6 +554,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<RequestDeviceVerificationCodeAuth>((event, emit) async {
       String emailAddress = event.emailAddress;
+
+      emit(
+        const LoadingAuthState(),
+      );
 
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
@@ -582,6 +631,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String confirmPassword = event.confirmPassword;
       String password = event.password;
 
+      emit(
+        const LoadingAuthState(),
+      );
+
       authFieldValidation = AuthFieldValidation(
         isEmailAddressEmpty:
             GeneralFunctions.checkFieldIfStringIsEmpty(emailAddress),
@@ -624,10 +677,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(
             FailureAuthState.resetPassword(
               isUnAuthorized: GeneralFunctions.checkIfRequestIsUnauthorized(
-                  statusCode:
-                      resetFailedRequestResponse.statusCode),
-              errorMessage:
-                  resetFailedRequestResponse.errorMessage,
+                  statusCode: resetFailedRequestResponse.statusCode),
+              errorMessage: resetFailedRequestResponse.errorMessage,
               authFieldValidation: authFieldValidation,
             ),
           );

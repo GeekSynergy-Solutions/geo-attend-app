@@ -49,6 +49,7 @@ class AppStringConstants {
   static String confirmPasswordHint = '********';
   static String emailFieldEmptyError = 'Enter your email address';
   static String emailFieldError = 'Please enter a valid email address';
+  static String loginPassFieldError = 'Password is required';
   static String passwordFieldError =
       'Minimum of ten characters required: \nOne uppercase letter, \nOne lowercase letter, \nOne number, \nOne Special character';
   static String firstNameFieldError = 'Enter your firstname';
@@ -128,6 +129,7 @@ class AppStringConstants {
   static String attendanceDescHint = '';
   static String createAttendanceBtnLabel = 'Create Attendance';
   static String joinWithCodeBtnLabel = 'Join with a Code';
+  static String attendeeLabel = 'Attendee';
   static String timeZoneHintLabel = 'GMT +1';
   static String timeZoneError = 'Time zone required';
   static String recuringLabel({required String period}) => 'Recuring $period';
@@ -156,4 +158,8 @@ class AppStringConstants {
   static String polygonLabel = 'polygon';
   static String radiusLabel = 'radius';
   static String circularLabel = 'circular';
+  static String previousAttendanceLabel = 'Previous attendance';
+  static String noPreviousAttendanceAttendanceDesLabel({required bool isItAnAttendee}) => 'You are yet to ${isItAnAttendee ? 'join' : 'host'} your first meeting.\nYour previous attendance taken will appear here';
+  static String totalAttendance({required bool isItAnAttendee}) => 'Total Attendance ${isItAnAttendee ? 'Joined' : 'Hosted'}';
+  static String seeAllLabel = 'See All';
 }

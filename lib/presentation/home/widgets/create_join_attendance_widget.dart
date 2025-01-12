@@ -6,10 +6,15 @@ import 'package:geoattend/domain/entity/objectData/successfulUserDataStatus/succ
 import 'package:geoattend/infrastructure/util/appStringConstants/app_string_constants.dart';
 import 'package:geoattend/infrastructure/util/reusableWidgets/appButton/app_button_widget.dart';
 
-class CreateJoinAttendanceWidget extends StatelessWidget {
+class CreateJoinAttendanceWidget extends StatefulWidget {
   final SuccessfulUserDataStatus successfulUserDataStatus;
   const CreateJoinAttendanceWidget({super.key, required this.successfulUserDataStatus,});
 
+  @override
+  State<CreateJoinAttendanceWidget> createState() => _CreateJoinAttendanceWidgetState();
+}
+
+class _CreateJoinAttendanceWidgetState extends State<CreateJoinAttendanceWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -18,7 +23,7 @@ class CreateJoinAttendanceWidget extends StatelessWidget {
           appButtonFunctionality: () {
             context.router.push(
               CreateAttendanceRoute(
-                successfulUserDataStatus: successfulUserDataStatus,
+                successfulUserDataStatus: widget.successfulUserDataStatus,
               ),
             );
           },

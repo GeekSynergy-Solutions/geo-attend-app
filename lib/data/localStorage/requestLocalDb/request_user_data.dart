@@ -11,7 +11,6 @@ class RequestUserData {
   RequestUserData(this.appSharedPreferences);
   Future addUserToStorage({
     required String email,
-    required String fullname,
     required String firstName,
     required String lastName,
     required String deviceName,
@@ -49,6 +48,8 @@ class RequestUserData {
       firstTimeLogin: firstTimeLogin,
       hasUserMigrated: hasUserMigrated,
       deletedFromRemoteServer: deletedFromRemoteServer,
+      profileBgColor: profileBgColor,
+      userInitial: userInitial,
     );
 
     final id = await db.insert(
@@ -62,7 +63,6 @@ class RequestUserData {
 
   Future updateUserRecord({
     required String email,
-    required String fullname,
     required String firstName,
     required String lastName,
     required String deviceName,
@@ -146,6 +146,7 @@ class RequestUserData {
           role: GeneralFunctions.convertFirstCharToUpperCaseChar(
             value: element.role ?? '',
           ),
+          deviceName: element.deviceName,
           dbUserId: element.dbUserId,
           deletedFromRemoteServer: deletedFromRemoteServer,
         );
@@ -341,6 +342,7 @@ class RequestUserData {
     }
     return userProfileBgColor;
   }
+
   Future<String> getUserDeviceNameStatus() async {
     final getUserData = await getUserDataInStorage();
     final email = await appSharedPreferences.readUserEmail();
@@ -369,7 +371,6 @@ class RequestUserData {
 
   Future addNewOrUpdateUserRecord({
     required String email,
-    required String fullname,
     required String firstName,
     required String lastName,
     required String deviceName,
@@ -395,7 +396,6 @@ class RequestUserData {
         deviceName: deviceName,
         role: role,
         accountLocked: accountLocked,
-        fullname: fullname,
         image: image,
         dbUserId: dbUserId,
         accountVerified: accountVerified,
@@ -417,7 +417,6 @@ class RequestUserData {
             deviceName: deviceName,
             role: role,
             accountLocked: accountLocked,
-            fullname: fullname,
             image: image,
             dbUserId: dbUserId,
             accountVerified: accountVerified,
@@ -442,7 +441,6 @@ class RequestUserData {
           deviceName: deviceName,
           role: role,
           accountLocked: accountLocked,
-          fullname: fullname,
           image: image,
           dbUserId: dbUserId,
           accountVerified: accountVerified,

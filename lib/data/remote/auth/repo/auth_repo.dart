@@ -1,6 +1,5 @@
 import 'package:either_dart/either.dart';
 import 'package:geoattend/data/remote/auth/dataProvider/auth_data.dart';
-import 'package:geoattend/data/remote/auth/model/verifiedUserData/verified_user_data_model.dart';
 import 'package:geoattend/domain/entity/request/auth/login/login_request.dart';
 import 'package:geoattend/domain/entity/request/auth/requestForgotPassword/request_forgot_password_request.dart';
 import 'package:geoattend/domain/entity/request/auth/resendAccVerification/resend_acc_verification_request.dart';
@@ -62,13 +61,13 @@ class AuthRepo implements AuthRepoInterface {
   }
 
   @override
-  Future<Either<FailureResponse, VerifiedUserDataModel>> loginAuthRepoRequest(
+  Future<Either<FailureResponse, SuccessResponse>> loginAuthRepoRequest(
       {required LoginRequest request}) async {
     var responseData = await authData.loginAuthRequest(
       request: request,
     );
     if (responseData.isRight) {
-      return Right(VerifiedUserDataModel.fromJson(responseData.right));
+      return Right(SuccessResponse.fromJson(responseData.right));
     } else {
       return Left(responseData.left);
     }
@@ -131,14 +130,14 @@ class AuthRepo implements AuthRepoInterface {
   }
 
   @override
-  Future<Either<FailureResponse, VerifiedUserDataModel>>
+  Future<Either<FailureResponse, SuccessResponse>>
       continueAsAGuestUserAuthRepoRequest(
           {required ContinueAsAGuestRequest request}) async {
     var responseData = await authData.continueAsAGuestUserAuthRequest(
       request: request,
     );
     if (responseData.isRight) {
-      return Right(VerifiedUserDataModel.fromJson(responseData.right));
+      return Right(SuccessResponse.fromJson(responseData.right));
     } else {
       return Left(responseData.left);
     }

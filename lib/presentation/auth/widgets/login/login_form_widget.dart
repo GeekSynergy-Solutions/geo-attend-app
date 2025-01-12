@@ -36,6 +36,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final formKey = GlobalKey<FormState>();
 
   AuthFieldValidation authFieldValidationStatus = AuthFieldValidation(
+    isEmailAddressEmpty: false,
+    isEmailAddressValid: true,
     isPasswordValid: true,
   );
 
@@ -105,7 +107,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               controller: passwordController,
               enabled: !isRequestInProgress,
               errorText: !authFieldValidationStatus.isPasswordValid
-                  ? AppStringConstants.passwordFieldError
+                  ? AppStringConstants.loginPassFieldError
                   : null,
               hintText: AppStringConstants.passwordHint,
               isThereAnError: !authFieldValidationStatus.isPasswordValid,

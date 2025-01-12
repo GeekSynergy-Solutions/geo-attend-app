@@ -15,6 +15,11 @@ class AppColors {
   static const Color activeSwitchColor = Color(0xFF001D1C);
   static const Color appTitleColor = Color(0xFF001D1C);
 
+  static const Color totalAttendanceBgColor = Color(0xFF001D1C);
+
+  static const Color attendanceProgressBgColor = Color(0xFF001D1C);
+  static const Color attendanceAnalyticBgColor = Color(0xFFFFFFFF);
+
   static const Color welcomeGreetingTitleColor = Color(0xFF404446);
   static const Color welcomeGreetingDescColor = Color(0xFF6C7072);
 
@@ -53,12 +58,17 @@ class AppColors {
   static const Color textFieldLabelColor = Color(0xFF202325);
   static const Color blackBgColor = Color(0xFF000000);
   static const Color blackBorderColor = Color(0xFF000000);
+  static const Color primaryBorderColor = Color(0xFF001D1C);
   static const Color blackTextColor = Color(0xFF000000);
   static const Color whiteBgColor = Color(0xFFFFFFFF);
   static const Color whiteBorderColor = Color(0xFFFFFFFF);
   static const Color whiteTextColor = Color(0xFFFFFFFF);
   static const Color buttonWhiteTextColor = Color(0xFFFFFFFF);
   static const Color primaryTextColor = Color(0xFF001D1C);
+
+  static const Color noOfAttendeesColor = Color(0xFF00544f);
+  static const Color analyticsLabelColor = Color(0xFF404446);
+  static const Color previousAttendanceLabelColor = Color(0xFF404446);
 
   static const Color bottomSheetBgColor = Color(0xFFFDFFF2);
 

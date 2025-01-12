@@ -46,7 +46,7 @@ class LoginDesWidget extends StatelessWidget {
           height: 10.0,
         ),
         Text(
-          AppStringConstants.welcomeBackLabel,
+          AppStringConstants.welcomeBackDes,
           style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 14.0,

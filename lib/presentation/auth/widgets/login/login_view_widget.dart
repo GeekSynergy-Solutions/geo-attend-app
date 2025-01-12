@@ -76,7 +76,7 @@ class _LoginViewWidgetState extends State<LoginViewWidget> {
                     if (!accountVerified) {
                       context.router.replace(
                         AccountVerificationRoute(
-                          emailAddress: verifiedUserData.emailAddress,
+                          emailAddress: verifiedUserData.email,
                         ),
                       );
                     }

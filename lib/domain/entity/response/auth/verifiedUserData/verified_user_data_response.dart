@@ -2,46 +2,50 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:geoattend/app/config/appColors/app_colors.dart';
+import 'package:geoattend/infrastructure/util/generalFunctions/general_functions.dart';
 
 class VerifiedUserDataResponse extends Equatable {
-  final String accessToken;
+  final String token;
   final String refreshToken;
   final String userId;
-  final String emailAddress;
+  final String email;
   String firstName;
+  final String userProfileBgColor;
   final String lastName;
   final String deviceName;
-  final String profileBgColor;
   final String userInitial;
   final bool accountVerified;
   final bool deviceVerified;
-  final bool firstTimeLogin;
+  final bool firstTimeUser;
   final bool hasUserMigrated;
-  Color? userProfileBgColor;
   String? tokenExpiryDate;
+  Color? profileBgColor;
   String? role;
 
   VerifiedUserDataResponse({
-    required this.accessToken,
+    required this.token,
     required this.refreshToken,
-    required this.emailAddress,
+    required this.email,
     required this.userId,
-    required this.profileBgColor,
+    required this.userProfileBgColor,
     required this.firstName,
     required this.lastName,
     required this.deviceName,
     required this.accountVerified,
     required this.deviceVerified,
-    required this.firstTimeLogin,
+    required this.firstTimeUser,
     required this.hasUserMigrated,
     required this.userInitial,
-    this.userProfileBgColor,
+    this.profileBgColor,
     this.tokenExpiryDate = '',
     this.role = '',
   }) {
     firstName = firstName.isEmpty ? deviceName : firstName;
     role = hasUserMigrated ? 'User' : 'Guest';
-    userProfileBgColor = Color(int.parse(profileBgColor));
+    profileBgColor = userProfileBgColor.isNotEmpty
+        ? GeneralFunctions.convertHexToColor(userProfileBgColor)
+        : AppColors.blackBgColor;
     tokenExpiryDate = tokenExpiryDate!.isEmpty
         ? DateTime.now()
             .add(const Duration(
@@ -53,17 +57,17 @@ class VerifiedUserDataResponse extends Equatable {
 
   @override
   List<Object?> get props => [
-        accessToken,
+        token,
         refreshToken,
-        emailAddress,
+        email,
         userId,
-        profileBgColor,
+        userProfileBgColor,
         firstName,
         lastName,
         deviceName,
         accountVerified,
         deviceVerified,
-        firstTimeLogin,
+        firstTimeUser,
         hasUserMigrated,
         userInitial,
         tokenExpiryDate,

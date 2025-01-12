@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:geoattend/data/localStorage/appLocalDatabase/geo_attend_db.dart';
+import 'package:geoattend/data/localStorage/requestLocalDb/request_user_data.dart';
+import 'package:geoattend/data/remote/auth/model/verifiedUserData/verified_user_data_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -53,5 +55,26 @@ class RemoteDataUpdateInLocalDb {
       );
     }
     // await GeoAttendDb.dropReCreateDbTables();
+  }
+
+  static Future<void> addUpdateUser(
+      {required VerifiedUserDataModel verifiedUser,
+      required RequestUserData requestUserData}) async {
+    await requestUserData.addNewOrUpdateUserRecord(
+      email: verifiedUser.email,
+      firstName: verifiedUser.firstName,
+      lastName: verifiedUser.lastName,
+      deviceName: verifiedUser.deviceName,
+      image: '',
+      role: verifiedUser.role!,
+      dbUserId: verifiedUser.userId,
+      profileBgColor: verifiedUser.userProfileBgColor,
+      userInitial: verifiedUser.userInitial,
+      accountLocked: 1,
+      accountVerified: verifiedUser.accountVerified ? 1 : 0,
+      deviceVerified: verifiedUser.deviceVerified ? 1 : 0,
+      firstTimeLogin: verifiedUser.firstTimeUser ? 1 : 0,
+      hasUserMigrated: verifiedUser.hasUserMigrated ? 1 : 0,
+    );
   }
 }

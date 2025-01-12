@@ -35,11 +35,14 @@ class APIEndPoints {
   static String hostAttendancePieChartEndPoint = '/api/attendance/host-attendance-pie-chart';
   static String attendeeAttendancesEndPoint = '/api/attendance/attendee-attendances';
   static String hostAttendancesEndPoint = '/api/attendance/host-attendances';
-  static String createAttendanceEndPoint = '/api/attendance/create-attendance';
-  static String joinAttendanceEndPoint = '/api/attendance/join-attendance';
+  static String createCircularGeoFenceAttendanceEndPoint = '/api/attendance/create-attendance/circular-geo-fence';
+  static String createPolygonGeoFenceAttendanceEndPoint = '/api/attendance/create-attendance/polygon-geo-fence';
+  static String joinAttendanceEndPoint = '/api/attendance/join-attendance/attend';
+  static String verifyAttendanceCodeEndPoint = '/api/attendance/join-attendance/verify';
   static String recentAttendeeAttendanceEndPoint = '/api/attendance/recent-attendee-attendances';
   static String recentHostAttendanceEndPoint = '/api/attendance/recent-host-attendances';
   static String sendAttendanceConfirmationCodeEndPoint = '/api/attendance/send-attendance-confirmation-code';
+  static String verifyAttendanceConfirmationCodeEndPoint = '/api/attendance/verify-attendance-confirmation-code';
   static String sendAttendanceReportToHostEndPoint = '/api/attendance/send-attendance-report-to-host';
   static String totalAttendanceAttendedEndPoint = '/api/attendance/total-attendance-attended';
   static String totalAttendanceCreatedEndPoint = '/api/attendance/total-attendance-created';

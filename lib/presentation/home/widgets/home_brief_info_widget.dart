@@ -4,6 +4,7 @@ import 'package:geoattend/app/config/appColors/app_colors.dart';
 import 'package:geoattend/domain/entity/objectData/upcomingAttendance/upcoming_attendance_data.dart';
 import 'package:geoattend/domain/entity/objectData/welcomeGreeting/welcome_greeting_data.dart';
 import 'package:geoattend/infrastructure/util/appImagePath/app_image_path.dart';
+import 'package:geoattend/infrastructure/util/generalFunctions/general_functions.dart';
 import 'package:geoattend/infrastructure/util/reusableWidgets/appButton/app_button_widget.dart';
 import 'package:geoattend/infrastructure/util/reusableWidgets/appSpacer/app_spacer_widget.dart';
 
@@ -41,7 +42,7 @@ class _HomeBriefInfoWidgetState extends State<HomeBriefInfoWidget>
   UpcomingAttendanceData? upcomingAttendanceData;
 
   late AnimationController _controller;
-  late Animation<Offset> _animation;
+  late Animation<Offset> animation;
 
   @override
   void initState() {
@@ -50,9 +51,9 @@ class _HomeBriefInfoWidgetState extends State<HomeBriefInfoWidget>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
-    )..repeat(reverse: true);
+    )..repeat(reverse: false);
 
-    _animation = Tween<Offset>(
+    animation = Tween<Offset>(
       begin: const Offset(-1.0, 0.0),
       end: const Offset(1.0, 0.0),
     ).animate(_controller);
@@ -66,20 +67,24 @@ class _HomeBriefInfoWidgetState extends State<HomeBriefInfoWidget>
 
   @override
   Widget build(BuildContext context) {
-    return userFirstTimeLogin && !doUserHaveUpcomingAttendance
-        ? PageView.builder(
-            itemCount: welcomeGreetings.length,
-            itemBuilder: (context, index) {
-              WelcomeGreetingData welcomeGreeting = welcomeGreetings[index];
-              return SlideTransition(
-                position: _animation,
-                child: firstTimeGreetingItem(
+    final deviceSize = GeneralFunctions.getDeviceSize(context: context);
+    return (userFirstTimeLogin && !doUserHaveUpcomingAttendance)
+        ? Container(
+            height: deviceSize.height * 0.22,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+            ),
+            child: PageView.builder(
+              itemCount: welcomeGreetings.length,
+              itemBuilder: (context, index) {
+                WelcomeGreetingData welcomeGreeting = welcomeGreetings[index];
+                return firstTimeGreetingItem(
                   description: welcomeGreeting.description,
                   imagePath: welcomeGreeting.imagePath,
                   title: welcomeGreeting.title,
-                ),
-              );
-            },
+                );
+              },
+            ),
           )
         : doUserHaveUpcomingAttendance && upcomingAttendanceData != null
             ? upcomingAttendance(
@@ -94,7 +99,6 @@ class _HomeBriefInfoWidgetState extends State<HomeBriefInfoWidget>
     required String imagePath,
   }) {
     return Container(
-      height: 190,
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(
@@ -102,47 +106,57 @@ class _HomeBriefInfoWidgetState extends State<HomeBriefInfoWidget>
         ),
         color: AppColors.whiteBgColor,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16.0,
-                    color: AppColors.welcomeGreetingTitleColor,
-                  ),
-                ),
-                const AppSpacerWidget(
-                  height: 10.0,
-                ),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
-                    color: AppColors.welcomeGreetingDescColor,
-                  ),
-                ),
-              ],
-            ),
-            const AppSpacerWidget(
-              width: 20.0,
-            ),
-            Expanded(
-              child: Align(
-                alignment: AlignmentDirectional.topEnd,
-                child: SvgPicture.asset(
-                  AppImagePath.locationTrackingSvg,
+      child: Card(
+        elevation: 1.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.0,
+                        color: AppColors.welcomeGreetingTitleColor,
+                      ),
+                    ),
+                    const AppSpacerWidget(
+                      height: 10.0,
+                    ),
+                    Text(
+                      description,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.0,
+                        color: AppColors.welcomeGreetingDescColor,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              const AppSpacerWidget(
+                width: 20.0,
+              ),
+              Expanded(
+                child: Align(
+                  alignment: AlignmentDirectional.topEnd,
+                  child: SvgPicture.asset(
+                    imagePath,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

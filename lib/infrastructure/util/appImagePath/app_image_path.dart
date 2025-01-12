@@ -83,12 +83,15 @@ class AppImagePath {
   static const String loginPng = 'asset/images/auth/png/login.png';
   static const String loginSvg = 'asset/images/auth/svg/login.svg';
   
-  static const String firstWelcomePopUpPng = 'asset/images/auth/png/first_welcome_pop_up.png';
-  static const String firstWelcomePopUpSvg = 'asset/images/auth/svg/first_welcome_pop_up.svg';
+  static const String firstWelcomePopUpPng = 'asset/images/dashboard/png/first_welcome_pop_up.png';
+  static const String firstWelcomePopUpSvg = 'asset/images/dashboard/svg/first_welcome_pop_up.svg';
   
-  static const String secondWelcomePopUpPng = 'asset/images/auth/png/second_welcome_pop_up.png';
-  static const String secondWelcomePopUpSvg = 'asset/images/auth/svg/second_welcome_pop_up.svg';
+  static const String secondWelcomePopUpPng = 'asset/images/dashboard/png/second_welcome_pop_up.png';
+  static const String secondWelcomePopUpSvg = 'asset/images/dashboard/svg/second_welcome_pop_up.svg';
   
-  static const String upcomingAttendancePng = 'asset/images/auth/png/upcoming_attendance.png';
-  static const String upcomingAttendanceSvg = 'asset/images/auth/svg/upcoming_attendance.svg';
+  static const String upcomingAttendancePng = 'asset/images/dashboard/png/upcoming_attendance.png';
+  static const String upcomingAttendanceSvg = 'asset/images/dashboard/svg/upcoming_attendance.svg';
+  
+  static const String sadReactionPng = 'asset/images/dashboard/png/sad_reaction.png';
+  static const String sadReactionSvg = 'asset/images/dashboard/svg/sad_reaction.svg';
 }

@@ -37,7 +37,8 @@ class _DashboardViewWidgetState extends State<DashboardViewWidget> {
       body: AutoTabsRouter(
         routes: [
           HomeRoute(successfulUserDataStatus: successfulUserDataStatus),
-          AttendanceHistoryRoute(successfulUserDataStatus: successfulUserDataStatus),
+          AttendanceHistoryRoute(
+              successfulUserDataStatus: successfulUserDataStatus),
           ProfileRoute(successfulUserDataStatus: successfulUserDataStatus),
         ],
         homeIndex: 0,
@@ -67,13 +68,14 @@ class _DashboardViewWidgetState extends State<DashboardViewWidget> {
                   type: BottomNavigationBarType.fixed,
                   elevation: 0.0,
                   onTap: (index) {
-                    if (successfulUserDataStatus.isUserAGuest) {
-                      if (index == 0) {
-                        navigationRouter.setActiveIndex(index);
-                      }
-                    } else {
-                      navigationRouter.setActiveIndex(index);
-                    }
+                    // if (successfulUserDataStatus.isUserAGuest) {
+                    //   if (index == 0) {
+                    //     navigationRouter.setActiveIndex(index);
+                    //   }
+                    // } else {
+                    //   navigationRouter.setActiveIndex(index);
+                    // }
+                    navigationRouter.setActiveIndex(index);
                     setCurrentBottomIndex(index);
                   },
                   items: [
